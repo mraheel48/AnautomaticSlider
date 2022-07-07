@@ -1,22 +1,24 @@
 package com.example.anautomaticslider
 
-import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class SecondTry : AppCompatActivity() {
+
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager: ViewPager2
 
     var listItems: ArrayList<SlideItemsModel> = ArrayList()
 
-    public lateinit var tabLayout: TabLayout
-    public lateinit var viewPager: ViewPager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_second_try)
 
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tabs)
@@ -26,26 +28,25 @@ class MainActivity : AppCompatActivity() {
         listItems.add(SlideItemsModel(R.drawable.item2))
         listItems.add(SlideItemsModel(R.drawable.item3))
         listItems.add(SlideItemsModel(R.drawable.item4))
-        /*listItems.add(SlideItemsModel(R.drawable.item5))
-        listItems.add(SlideItemsModel(R.drawable.item6))
-        listItems.add(SlideItemsModel(R.drawable.item7))
-        listItems.add(SlideItemsModel(R.drawable.item8))
-        listItems.add(SlideItemsModel(R.drawable.item9))
-        listItems.add(SlideItemsModel(R.drawable.item10))*/
 
-        Log.d("myTag", "${listItems.size}")
-        viewPager.adapter = SlidePagerAdapter(listItems)
+        viewPager.adapter = createCardAdapter()
+        TabLayoutMediator(
+            tabLayout, viewPager
+        ) { tab, position -> /*tab.text = "Tab " + (position + 1)*/ }.attach()
 
         // The_slide_timer
         val timer = Timer()
         timer.schedule(TheSliderTimer(this, viewPager, listItems), 2000, 3000)
-        tabLayout.setupWithViewPager(viewPager, true)
-
     }
+
+    private fun createCardAdapter(): ViewPagerAdapter {
+        return ViewPagerAdapter(this)
+    }
+
 
     class TheSliderTimer(
         val activity: AppCompatActivity,
-        val viewPager: ViewPager,
+        val viewPager: ViewPager2,
         val listItem: ArrayList<SlideItemsModel>
     ) : TimerTask() {
         override fun run() {

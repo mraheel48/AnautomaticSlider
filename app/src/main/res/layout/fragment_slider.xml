@@ -16,4 +16,3 @@
         android:src="@drawable/item1"
         tools:ignore="ContentDescription,MissingConstraints" />
 </androidx.cardview.widget.CardView>
-
